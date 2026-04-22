@@ -1,0 +1,1058 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .gc-root {
+    background: #0a0a0f;
+    min-height: 100vh;
+    font-family: 'Syne', sans-serif;
+    color: #e8e6f0;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .gc-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(120,100,255,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(120,100,255,0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  .gc-header {
+    position: relative;
+    z-index: 10;
+    padding: 32px 32px 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .gc-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .gc-logo-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #7b5fe8, #4ecdc4);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gc-logo-text {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9d9aae;
+  }
+
+  .gc-badge {
+    background: rgba(78,205,196,0.12);
+    border: 1px solid rgba(78,205,196,0.3);
+    color: #4ecdc4;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+
+  .gc-hero {
+    position: relative;
+    z-index: 10;
+    padding: 40px 32px 24px;
+    text-align: center;
+  }
+
+  .gc-title {
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #ffffff 0%, #c4b8ff 50%, #4ecdc4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  .gc-subtitle {
+    font-size: 15px;
+    color: #6b6880;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .gc-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 0 32px;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .gc-tab {
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #6b6880;
+    font-family: 'Syne', sans-serif;
+  }
+
+  .gc-tab.active {
+    background: rgba(123,95,232,0.2);
+    border-color: rgba(123,95,232,0.5);
+    color: #b8a8ff;
+  }
+
+  .gc-tab:hover:not(.active) {
+    background: rgba(255,255,255,0.04);
+    color: #a09cb8;
+  }
+
+  .gc-content {
+    position: relative;
+    z-index: 10;
+    padding: 0 24px 32px;
+  }
+
+  .gc-panel { display: none; }
+  .gc-panel.active { display: block; }
+
+  .gc-input-area {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+
+  .gc-input-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #5a5770;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .gc-input-label span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #7b5fe8;
+    display: inline-block;
+  }
+
+  .gc-textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px 16px;
+    color: #e8e6f0;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    resize: vertical;
+    min-height: 100px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .gc-textarea:focus {
+    border-color: rgba(123,95,232,0.5);
+  }
+
+  .gc-textarea::placeholder {
+    color: #3d3a50;
+  }
+
+  .gc-file-drop {
+    border: 1px dashed rgba(123,95,232,0.3);
+    border-radius: 10px;
+    padding: 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: rgba(123,95,232,0.03);
+  }
+
+  .gc-file-drop:hover {
+    border-color: rgba(123,95,232,0.6);
+    background: rgba(123,95,232,0.06);
+  }
+
+  .gc-file-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+    font-family: monospace;
+    color: #7b5fe8;
+  }
+
+  .gc-file-text {
+    font-size: 13px;
+    color: #6b6880;
+  }
+
+  .gc-file-text strong {
+    color: #9d8fff;
+  }
+
+  .gc-predict-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #7b5fe8, #4ecdc4);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gc-predict-btn:hover { opacity: 0.9; }
+  .gc-predict-btn:active { transform: scale(0.99); }
+  .gc-predict-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .gc-result-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 28px;
+    margin-top: 20px;
+    display: none;
+  }
+
+  .gc-result-card.visible { display: block; }
+
+  .gc-result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .gc-result-genre {
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fff, #c4b8ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gc-confidence-ring {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+  }
+
+  .gc-ring-svg {
+    transform: rotate(-90deg);
+  }
+
+  .gc-ring-bg {
+    fill: none;
+    stroke: rgba(255,255,255,0.06);
+    stroke-width: 5;
+  }
+
+  .gc-ring-fill {
+    fill: none;
+    stroke-width: 5;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s ease;
+  }
+
+  .gc-ring-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .gc-ring-pct {
+    font-size: 16px;
+    font-weight: 800;
+    color: #e8e6f0;
+    line-height: 1;
+  }
+
+  .gc-ring-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #5a5770;
+  }
+
+  .gc-genre-icon {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #6b6880;
+    margin-bottom: 6px;
+  }
+
+  .gc-bar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .gc-bar-item {
+    display: grid;
+    grid-template-columns: 140px 1fr 46px;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .gc-bar-name {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #9d9aae;
+    text-align: right;
+  }
+
+  .gc-bar-name.top {
+    color: #c4b8ff;
+  }
+
+  .gc-bar-track {
+    height: 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .gc-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s ease;
+    width: 0;
+  }
+
+  .gc-bar-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: #6b6880;
+    text-align: right;
+  }
+
+  .gc-bar-pct.top {
+    color: #9d8fff;
+    font-weight: 500;
+  }
+
+  .gc-modality-chips {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .gc-chip {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .gc-chip.audio {
+    background: rgba(78,205,196,0.1);
+    border: 1px solid rgba(78,205,196,0.25);
+    color: #4ecdc4;
+  }
+
+  .gc-chip.lyric {
+    background: rgba(123,95,232,0.1);
+    border: 1px solid rgba(123,95,232,0.3);
+    color: #b8a8ff;
+  }
+
+  .gc-chip.fusion {
+    background: rgba(255,165,100,0.1);
+    border: 1px solid rgba(255,165,100,0.25);
+    color: #ffaa64;
+  }
+
+  .gc-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .gc-metric-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .gc-metric-val {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #e8e6f0;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .gc-metric-val.green { color: #4ecdc4; }
+  .gc-metric-val.purple { color: #b8a8ff; }
+  .gc-metric-val.amber { color: #ffaa64; }
+
+  .gc-metric-lbl {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #4a4760;
+  }
+
+  .gc-model-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .gc-model-row {
+    display: grid;
+    grid-template-columns: 1fr 160px 64px;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .gc-model-row:hover {
+    background: rgba(123,95,232,0.06);
+    border-color: rgba(123,95,232,0.2);
+  }
+
+  .gc-model-row.best {
+    border-color: rgba(78,205,196,0.25);
+    background: rgba(78,205,196,0.04);
+  }
+
+  .gc-model-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #c8c5d8;
+  }
+
+  .gc-model-tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #4ecdc4;
+    margin-top: 2px;
+  }
+
+  .gc-model-bar-track {
+    height: 4px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .gc-model-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  .gc-model-acc {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: right;
+    color: #9d9aae;
+  }
+
+  .gc-model-acc.best { color: #4ecdc4; }
+
+  .gc-flow-wrapper {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .gc-flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #4a4760;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .gc-samples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .gc-sample-btn {
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Syne', sans-serif;
+  }
+
+  .gc-sample-btn:hover {
+    background: rgba(123,95,232,0.08);
+    border-color: rgba(123,95,232,0.3);
+  }
+
+  .gc-sample-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #c8c5d8;
+    margin-bottom: 2px;
+  }
+
+  .gc-sample-genre {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #5a5770;
+  }
+
+  .gc-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .gc-waveform {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    margin: 16px 0;
+  }
+
+  .gc-wave-bar {
+    width: 3px;
+    background: linear-gradient(to top, #7b5fe8, #4ecdc4);
+    border-radius: 2px;
+    animation: waveAnim 1.2s ease-in-out infinite;
+  }
+
+  @keyframes waveAnim {
+    0%, 100% { transform: scaleY(0.3); }
+    50% { transform: scaleY(1); }
+  }
+
+  .loading-overlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(10,10,15,0.85);
+    z-index: 50;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+  }
+
+  .loading-overlay.active { display: flex; }
+</style>
+
+<div class="gc-root">
+  <div class="gc-grid-bg"></div>
+
+  <div class="gc-header">
+    <div class="gc-logo">
+      <div class="gc-logo-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M3 14 Q5 8 7 12 Q9 16 11 8 Q13 0 15 6 Q17 10 18 8" stroke="white" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <span class="gc-logo-text">Genre Classifier</span>
+    </div>
+    <div class="gc-badge">Graduation Project</div>
+  </div>
+
+  <div class="gc-hero">
+    <div class="gc-title">Music Genre<br>Intelligence</div>
+    <div class="gc-subtitle">Multimodal AI — fusing audio spectrograms &amp; lyric semantics to classify music across 8 genres with 87%+ accuracy.</div>
+  </div>
+
+  <div class="gc-tabs">
+    <button class="gc-tab active" onclick="switchTab('demo')">Try it live</button>
+    <button class="gc-tab" onclick="switchTab('results')">Model results</button>
+    <button class="gc-tab" onclick="switchTab('architecture')">Architecture</button>
+  </div>
+
+  <div class="gc-content">
+
+    <div id="tab-demo" class="gc-panel active">
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#4a4760;margin-bottom:12px;">Quick samples</div>
+      <div class="gc-samples-grid" id="samplesGrid"></div>
+
+      <div class="gc-input-area" style="margin-top:14px;">
+        <div class="gc-input-label"><span></span>Upload audio (optional)</div>
+        <div class="gc-file-drop" id="audioDrop">
+          <div class="gc-file-icon">.mp3</div>
+          <div class="gc-file-text">Drop an <strong>MP3</strong> here or click to choose</div>
+          <div style="margin-top:10px;font-family:'DM Mono',monospace;font-size:11px;color:#3d3a50;" id="audioName">No file selected</div>
+        </div>
+        <input id="audioInput" type="file" accept="audio/mpeg,audio/mp3,.mp3" style="display:none;" />
+      </div>
+
+      <div class="gc-input-area" style="position:relative;">
+        <div class="gc-input-label"><span></span>Paste lyrics</div>
+        <textarea class="gc-textarea" id="lyricsInput" rows="4" placeholder="Enter song lyrics here...&#10;e.g. &quot;I used to roll the dice, fear the devil's eyes...&quot;"></textarea>
+        <div class="loading-overlay" id="loadingOverlay">
+          <div style="text-align:center;">
+            <div class="gc-waveform" id="waveform"></div>
+            <div style="font-size:13px;font-weight:600;color:#9d8fff;letter-spacing:0.06em;">Analyzing...</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="gc-predict-btn" id="predictBtn" onclick="runPrediction()">
+        Classify Genre
+      </button>
+
+      <div class="gc-result-card" id="resultCard">
+        <div style="margin-bottom:6px;" class="gc-genre-icon" id="resultModality"></div>
+        <div class="gc-result-header">
+          <div>
+            <div class="gc-result-genre" id="resultGenre">ROCK</div>
+            <div style="font-size:12px;color:#6b6880;margin-top:4px;" id="resultDesc"></div>
+          </div>
+          <div class="gc-confidence-ring">
+            <svg class="gc-ring-svg" width="72" height="72" viewBox="0 0 72 72">
+              <circle class="gc-ring-bg" cx="36" cy="36" r="28"/>
+              <circle class="gc-ring-fill" id="ringFill" cx="36" cy="36" r="28" stroke="url(#ringGrad)" stroke-dasharray="176" stroke-dashoffset="176"/>
+              <defs>
+                <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#7b5fe8"/>
+                  <stop offset="100%" stop-color="#4ecdc4"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="gc-ring-text">
+              <div class="gc-ring-pct" id="ringPct">—</div>
+              <div class="gc-ring-label">conf</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gc-bar-list" id="barList"></div>
+
+        <div class="gc-modality-chips">
+          <div class="gc-chip lyric">Lyrics NLP</div>
+          <div class="gc-chip audio">Audio MFCCs</div>
+          <div class="gc-chip fusion">Early Fusion</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-results" class="gc-panel">
+      <div class="gc-metrics-grid">
+        <div class="gc-metric-card">
+          <div class="gc-metric-val green">87.3%</div>
+          <div class="gc-metric-lbl">Best accuracy</div>
+        </div>
+        <div class="gc-metric-card">
+          <div class="gc-metric-val purple">0.871</div>
+          <div class="gc-metric-lbl">F1-macro</div>
+        </div>
+        <div class="gc-metric-card">
+          <div class="gc-metric-val amber">8</div>
+          <div class="gc-metric-lbl">Genres</div>
+        </div>
+      </div>
+      <div class="gc-model-rows" id="modelRows"></div>
+    </div>
+
+    <div id="tab-architecture" class="gc-panel">
+      <div class="gc-flow-wrapper">
+        <div class="gc-flow-title">Multimodal pipeline</div>
+        <svg viewBox="0 0 580 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+          <defs>
+            <marker id="arr" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L8,4 L0,8 Z" fill="rgba(123,95,232,0.6)"/>
+            </marker>
+          </defs>
+
+          <rect x="10" y="60" width="90" height="44" rx="8" fill="rgba(123,95,232,0.15)" stroke="rgba(123,95,232,0.4)" stroke-width="1"/>
+          <text x="55" y="79" text-anchor="middle" fill="#c4b8ff" font-family="Syne,sans-serif" font-size="10" font-weight="600">MP3 Audio</text>
+          <text x="55" y="95" text-anchor="middle" fill="#7b5fe8" font-family="Syne,sans-serif" font-size="9">input</text>
+
+          <rect x="10" y="216" width="90" height="44" rx="8" fill="rgba(78,205,196,0.1)" stroke="rgba(78,205,196,0.35)" stroke-width="1"/>
+          <text x="55" y="235" text-anchor="middle" fill="#4ecdc4" font-family="Syne,sans-serif" font-size="10" font-weight="600">Lyrics</text>
+          <text x="55" y="251" text-anchor="middle" fill="#2a8f8a" font-family="Syne,sans-serif" font-size="9">text input</text>
+
+          <rect x="130" y="42" width="110" height="80" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <text x="185" y="62" text-anchor="middle" fill="#9d9aae" font-family="Syne,sans-serif" font-size="9" font-weight="600" letter-spacing="1">AUDIO FEATURES</text>
+          <text x="185" y="78" text-anchor="middle" fill="#6b6880" font-family="Syne,sans-serif" font-size="8.5">MFCC (80d)</text>
+          <text x="185" y="91" text-anchor="middle" fill="#6b6880" font-family="Syne,sans-serif" font-size="8.5">Chroma (24d)</text>
+          <text x="185" y="104" text-anchor="middle" fill="#6b6880" font-family="Syne,sans-serif" font-size="8.5">Mel / Spectral (270d+)</text>
+          <text x="185" y="117" text-anchor="middle" fill="#6b6880" font-family="Syne,sans-serif" font-size="8.5">Total: ~461 dims</text>
+
+          <rect x="130" y="198" width="110" height="80" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <text x="185" y="218" text-anchor="middle" fill="#9d9aae" font-family="Syne,sans-serif" font-size="9" font-weight="600" letter-spacing="1">LYRIC FEATURES</text>
+          <text x="185" y="234" text-anchor="middle" fill="#6b6880" font-family="Syne,sans-serif" font-size="8.5">TF-IDF (5000d)</text>
+          <text x="185" y="247" text-anchor="middle" fill="#6b6880" font-family="Syne,sans-serif" font-size="8.5">MiniLM embed (384d)</text>
+          <text x="185" y="260" text-anchor="middle" fill="#6b6880" font-family="Syne,sans-serif" font-size="8.5">Semantic vectors</text>
+          <text x="185" y="273" text-anchor="middle" fill="#6b6880" font-family="Syne,sans-serif" font-size="8.5">sentence-transformers</text>
+
+          <rect x="272" y="120" width="100" height="80" rx="8" fill="rgba(255,165,100,0.08)" stroke="rgba(255,165,100,0.3)" stroke-width="1"/>
+          <text x="322" y="143" text-anchor="middle" fill="#ffaa64" font-family="Syne,sans-serif" font-size="10" font-weight="700">EARLY</text>
+          <text x="322" y="158" text-anchor="middle" fill="#ffaa64" font-family="Syne,sans-serif" font-size="10" font-weight="700">FUSION</text>
+          <text x="322" y="176" text-anchor="middle" fill="#c87d3c" font-family="Syne,sans-serif" font-size="8.5">Concat → 845d</text>
+          <text x="322" y="191" text-anchor="middle" fill="#c87d3c" font-family="Syne,sans-serif" font-size="8.5">512 → 256 → 128</text>
+
+          <rect x="406" y="120" width="100" height="80" rx="8" fill="rgba(123,95,232,0.1)" stroke="rgba(123,95,232,0.35)" stroke-width="1"/>
+          <text x="456" y="143" text-anchor="middle" fill="#c4b8ff" font-family="Syne,sans-serif" font-size="10" font-weight="700">MLP</text>
+          <text x="456" y="158" text-anchor="middle" fill="#c4b8ff" font-family="Syne,sans-serif" font-size="10" font-weight="700">CLASSIFIER</text>
+          <text x="456" y="176" text-anchor="middle" fill="#8070c0" font-family="Syne,sans-serif" font-size="8.5">BatchNorm</text>
+          <text x="456" y="191" text-anchor="middle" fill="#8070c0" font-family="Syne,sans-serif" font-size="8.5">ReLU + Dropout</text>
+
+          <rect x="508" y="132" width="66" height="56" rx="8" fill="rgba(78,205,196,0.12)" stroke="rgba(78,205,196,0.4)" stroke-width="1"/>
+          <text x="541" y="154" text-anchor="middle" fill="#4ecdc4" font-family="Syne,sans-serif" font-size="10" font-weight="700">8</text>
+          <text x="541" y="168" text-anchor="middle" fill="#4ecdc4" font-family="Syne,sans-serif" font-size="9" font-weight="600">GENRES</text>
+          <text x="541" y="181" text-anchor="middle" fill="#2a8f8a" font-family="Syne,sans-serif" font-size="8">Softmax</text>
+
+          <line x1="100" y1="82" x2="129" y2="82" stroke="rgba(123,95,232,0.5)" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="100" y1="238" x2="129" y2="238" stroke="rgba(78,205,196,0.5)" stroke-width="1.5" marker-end="url(#arr)"/>
+          <path d="M240,82 Q260,82 260,160 L272,160" stroke="rgba(123,95,232,0.4)" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+          <path d="M240,238 Q260,238 260,160 L272,160" stroke="rgba(78,205,196,0.4)" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+          <line x1="372" y1="160" x2="405" y2="160" stroke="rgba(255,165,100,0.5)" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="506" y1="160" x2="507" y2="160" stroke="rgba(123,95,232,0.5)" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;">
+        <div class="gc-chip audio">461 audio dims</div>
+        <div class="gc-chip lyric">384 lyric dims</div>
+        <div class="gc-chip fusion">845-dim fusion vector</div>
+      </div>
+      <div style="margin-top:16px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#4a4760;margin-bottom:12px;">Dataset</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="genreGrid"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const API_BASE = (window.GC_API_BASE || 'http://localhost:8000');
+const GENRES = ['BLUES','ELECTRONIC - EDM','HIP-HOP - RAP','JAZZ','METAL','POP','R&B - SOUL','ROCK'];
+
+const GENRE_COLORS = {
+  'BLUES': ['rgba(24,95,165,0.25)','rgba(24,95,165,0.5)','#85b7eb'],
+  'ELECTRONIC - EDM': ['rgba(78,205,196,0.2)','rgba(78,205,196,0.5)','#4ecdc4'],
+  'HIP-HOP - RAP': ['rgba(255,165,100,0.2)','rgba(255,165,100,0.5)','#ffaa64'],
+  'JAZZ': ['rgba(186,117,23,0.2)','rgba(186,117,23,0.5)','#ef9f27'],
+  'METAL': ['rgba(226,75,74,0.2)','rgba(226,75,74,0.5)','#e24b4a'],
+  'POP': ['rgba(212,83,126,0.2)','rgba(212,83,126,0.5)','#d4537e'],
+  'R&B - SOUL': ['rgba(99,153,34,0.2)','rgba(99,153,34,0.5)','#97c459'],
+  'ROCK': ['rgba(123,95,232,0.2)','rgba(123,95,232,0.5)','#b8a8ff'],
+};
+
+const GENRE_DESCS = {
+  'BLUES': 'Expressive, emotive lyrics with pentatonic scales and call-response patterns',
+  'ELECTRONIC - EDM': 'Electronic production, synthesized textures, and high-energy beats',
+  'HIP-HOP - RAP': 'Rhythmic spoken word over beats — distinctive lyric velocity patterns',
+  'JAZZ': 'Sophisticated harmony, improvisation, and jazz-standard vocabulary',
+  'METAL': 'Aggressive distortion, fast tempos, and intense lyric themes',
+  'POP': 'Catchy melodic hooks, mainstream themes, and polished production',
+  'R&B - SOUL': 'Emotional vocal delivery, groove-based rhythms, and soul vocabulary',
+  'ROCK': 'Guitar-driven energy, verse-chorus structure, and diverse lyric themes',
+};
+
+const SAMPLES = [
+  { name:'Eminem — Stan', genre:'HIP-HOP - RAP', lyrics:`My tea's gone cold I'm wondering why I got out of bed at all\nThe morning rain clouds up my window and I can't see at all\nAnd even if I could it'll all be gray, but your picture on my wall\nIt reminds me that it's not so bad, it's not so bad\n\nDear Slim, I wrote you but you still ain't called\nI left my cell, my pager, and my home phone at the bottom\nI sent two letters back in autumn, you must not-a got 'em` },
+  { name:'Metallica — Enter Sandman', genre:'METAL', lyrics:`Say your prayers little one, don't forget my son\nTo include everyone. I tuck you in, warm within\nKeep you free from sin, till the sandman he comes\n\nSleep with one eye open, gripping your pillow tight\nExit: light, enter: night, grain of sand\nExit: light, enter: night, take my hand\nOff to never-never land` },
+  { name:'Billie Holiday — Strange Fruit', genre:'JAZZ', lyrics:`Southern trees bear a strange fruit\nBlood on the leaves and blood at the root\nBlack bodies swinging in the southern breeze\nStrange fruit hanging from the poplar trees\n\nPastoral scene of the gallant south\nThe bulging eyes and the twisted mouth\nScent of magnolias, sweet and fresh\nThen the sudden smell of burning flesh` },
+  { name:'Daft Punk — One More Time', genre:'ELECTRONIC - EDM', lyrics:`One more time we're gonna celebrate\nOh yeah, alright, don't stop the dancing\nOne more time we're gonna celebrate\nOh yeah, alright, don't stop the dancing\n\nMusic's got me feeling so free\nCelebrate and dance so free\nOne more time\nMusic's got me feeling so free` },
+  { name:'B.B. King — Thrill Is Gone', genre:'BLUES', lyrics:`The thrill is gone, the thrill is gone away\nThe thrill is gone baby, the thrill is gone away\nYou know you done me wrong baby\nAnd you'll be sorry someday\n\nThe thrill is gone, it's gone away from me\nAlthough I'll still live on, but so lonely I'll be` },
+  { name:'Adele — Rolling In The Deep', genre:'POP', lyrics:`There's a fire starting in my heart\nReaching a fever pitch and it's bringing me out the dark\nFinally I can see you crystal clear\nGo ahead and sell me out and I'll lay your ship bare\n\nSee how I'll leave with every piece of you\nDon't underestimate the things that I will do\nThere's a fire starting in my heart` },
+  { name:'Marvin Gaye — What\'s Going On', genre:'R&B - SOUL', lyrics:`Mother, mother, there's too many of you crying\nBrother, brother, brother, there's far too many of you dying\nYou know we've got to find a way to bring some loving here today\n\nFather, father, we don't need to escalate\nWar is not the answer, for only love can conquer hate\nYou know we've got to find a way to bring some lovin' here today` },
+  { name:'Nirvana — Smells Like Teen Spirit', genre:'ROCK', lyrics:`Load up on guns and bring your friends\nIt's fun to lose and to pretend\nShe's over bored and self-assured\nOh no, I know a dirty word\n\nHello, hello, hello, how low\nWith the lights out, it's less dangerous\nHere we are now, entertain us\nI feel stupid and contagious` },
+];
+
+let MODELS = [];
+
+function switchTab(name) {
+  document.querySelectorAll('.gc-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.gc-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function buildSamples() {
+  const grid = document.getElementById('samplesGrid');
+  SAMPLES.forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = 'gc-sample-btn';
+    btn.innerHTML = `<div class="gc-sample-name">${s.name.split('—')[0].trim()}</div><div class="gc-sample-genre">${s.genre}</div>`;
+    btn.onclick = () => {
+      document.getElementById('lyricsInput').value = s.lyrics;
+      setTimeout(runPrediction, 150);
+    };
+    grid.appendChild(btn);
+  });
+}
+
+function buildWaveform() {
+  const wf = document.getElementById('waveform');
+  for (let i = 0; i < 18; i++) {
+    const b = document.createElement('div');
+    b.className = 'gc-wave-bar';
+    const h = 12 + Math.random() * 32;
+    b.style.height = h + 'px';
+    b.style.animationDelay = (i * 0.07) + 's';
+    wf.appendChild(b);
+  }
+}
+
+function buildModelRows() {
+  const container = document.getElementById('modelRows');
+  container.innerHTML = '';
+  MODELS.forEach(m => {
+    const row = document.createElement('div');
+    row.className = 'gc-model-row' + (m.best ? ' best' : '');
+    const pct = ((m.acc - 60) / 35 * 100).toFixed(0);
+    const barColor = m.best ? 'linear-gradient(90deg,#4ecdc4,#7b5fe8)' : 'linear-gradient(90deg,#7b5fe8,#534ab7)';
+    row.innerHTML = `
+      <div>
+        <div class="gc-model-name">${m.name} ${m.best ? '<span style="font-size:10px;color:#4ecdc4;margin-left:6px;">★</span>':''}</div>
+        <div class="gc-model-tag">${m.tag}</div>
+      </div>
+      <div>
+        <div class="gc-model-bar-track">
+          <div class="gc-model-bar-fill" style="width:${pct}%;background:${barColor};"></div>
+        </div>
+        <div style="font-size:10px;color:#4a4760;margin-top:4px;">${m.desc}</div>
+      </div>
+      <div class="gc-model-acc ${m.best ? 'best' : ''}">${m.acc.toFixed(1)}%</div>
+    `;
+    container.appendChild(row);
+  });
+}
+
+function buildGenreGrid() {
+  const grid = document.getElementById('genreGrid');
+  grid.innerHTML = '';
+  GENRES.forEach(g => {
+    const c = GENRE_COLORS[g];
+    const d = document.createElement('div');
+    d.style.cssText = `padding:8px 12px;background:${c[0]};border:1px solid ${c[1]};border-radius:8px;display:flex;align-items:center;justify-content:space-between;`;
+    d.innerHTML = `<span style="font-size:11px;font-weight:600;color:${c[2]};">${g}</span><span style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3);">—</span>`;
+    d.dataset.genre = g;
+    grid.appendChild(d);
+  });
+}
+
+async function fetchJSON(path) {
+  const res = await fetch(`${API_BASE}${path}`);
+  if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+  return await res.json();
+}
+
+function safePct(p) {
+  const x = Math.max(0, Math.min(1, Number(p || 0)));
+  return x;
+}
+
+async function runPrediction() {
+  const text = document.getElementById('lyricsInput').value.trim();
+  const audioFile = document.getElementById('audioInput').files?.[0] || null;
+  if (!text && !audioFile) {
+    document.getElementById('lyricsInput').focus();
+    return;
+  }
+
+  const overlay = document.getElementById('loadingOverlay');
+  const btn = document.getElementById('predictBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="gc-spinner"></span>Classifying...';
+  overlay.classList.add('active');
+
+  try {
+    const fd = new FormData();
+    if (text) fd.append('text', text);
+    fd.append('top_k', '6');
+    if (audioFile) fd.append('audio', audioFile, audioFile.name);
+
+    const res = await fetch(`${API_BASE}/api/predict`, { method: 'POST', body: fd });
+    if (!res.ok) throw new Error(`Predict failed: ${res.status}`);
+    const data = await res.json();
+
+    const genre = data.label;
+    const conf = safePct(data.confidence);
+    const topK = Array.isArray(data.top_k) ? data.top_k : [];
+
+    document.getElementById('resultGenre').textContent = genre;
+    document.getElementById('resultDesc').textContent = GENRE_DESCS[genre] || '';
+    document.getElementById('resultModality').textContent = data.modality || 'Prediction';
+
+    const pct = Math.round(conf * 100);
+    document.getElementById('ringPct').textContent = pct + '%';
+    const circumference = 176;
+    const offset = circumference - (conf * circumference);
+    document.getElementById('ringFill').style.strokeDashoffset = offset;
+
+    const barList = document.getElementById('barList');
+    barList.innerHTML = '';
+    topK.slice(0, 6).forEach((it, i) => {
+      const g = it.genre;
+      const p = safePct(it.prob);
+      const isTop = i === 0;
+      const c = GENRE_COLORS[g] || ['rgba(255,255,255,0.02)','rgba(255,255,255,0.12)','#e8e6f0'];
+      const row = document.createElement('div');
+      row.className = 'gc-bar-item';
+      const barPct = Math.round(p * 100);
+      row.innerHTML = `
+        <div class="gc-bar-name ${isTop?'top':''}">${g}</div>
+        <div class="gc-bar-track"><div class="gc-bar-fill" style="width:0%;background:${isTop ? c[1] : 'rgba(255,255,255,0.12)'};" data-target="${barPct}"></div></div>
+        <div class="gc-bar-pct ${isTop?'top':''}">${barPct}%</div>
+      `;
+      barList.appendChild(row);
+    });
+
+    document.getElementById('resultCard').classList.add('visible');
+    setTimeout(() => {
+      document.querySelectorAll('.gc-bar-fill').forEach(el => {
+        el.style.width = el.dataset.target + '%';
+      });
+    }, 50);
+  } catch (e) {
+    console.error(e);
+    alert('Backend is not running. Start it with: uvicorn api_server:app --port 8000');
+  } finally {
+    overlay.classList.remove('active');
+    btn.disabled = false;
+    btn.innerHTML = 'Classify Genre';
+  }
+}
+
+function setupAudioDrop() {
+  const drop = document.getElementById('audioDrop');
+  const input = document.getElementById('audioInput');
+  const name = document.getElementById('audioName');
+
+  function setFile(f) {
+    if (!f) {
+      name.textContent = 'No file selected';
+      return;
+    }
+    name.textContent = f.name;
+  }
+
+  drop.addEventListener('click', () => input.click());
+  input.addEventListener('change', () => setFile(input.files?.[0] || null));
+
+  drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.style.borderColor = 'rgba(123,95,232,0.9)'; });
+  drop.addEventListener('dragleave', () => { drop.style.borderColor = 'rgba(123,95,232,0.3)'; });
+  drop.addEventListener('drop', (e) => {
+    e.preventDefault();
+    drop.style.borderColor = 'rgba(123,95,232,0.3)';
+    const f = e.dataTransfer?.files?.[0];
+    if (!f) return;
+    input.files = e.dataTransfer.files;
+    setFile(f);
+  });
+}
+
+async function bootstrapBackendData() {
+  try {
+    const res = await fetchJSON('/api/results');
+    const models = Array.isArray(res.models) ? res.models : [];
+    // Map backend results_summary.json -> UI rows
+    MODELS = models.map(m => ({
+      name: m.model || 'Model',
+      tag: (m.model || '').toLowerCase().includes('fusion') ? 'MULTIMODAL' : 'BASELINE',
+      desc: 'Loaded from results_summary.json',
+      acc: Number(m.accuracy || 0) * 100,
+      best: false,
+    })).sort((a,b) => b.acc - a.acc);
+    if (MODELS.length) MODELS[0].best = true;
+    buildModelRows();
+
+    const st = await fetchJSON('/api/stats');
+    const per = st?.main?.per_genre || {};
+    document.querySelectorAll('#genreGrid [data-genre]').forEach(el => {
+      const g = el.dataset.genre;
+      const count = per[g];
+      const right = el.querySelector('span:last-child');
+      if (right) right.textContent = (typeof count === 'number') ? `${count} songs` : '—';
+    });
+  } catch (e) {
+    console.warn('Backend data not loaded:', e);
+  }
+}
+
+buildSamples();
+buildWaveform();
+buildModelRows();
+buildGenreGrid();
+setupAudioDrop();
+bootstrapBackendData();
+</script>
